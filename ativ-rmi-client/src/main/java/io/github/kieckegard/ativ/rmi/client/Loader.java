@@ -6,6 +6,7 @@
 package io.github.kieckegard.ativ.rmi.client;
 
 import io.github.kieckegard.ativ.rmi.shared.Calculator;
+import io.github.kieckegard.ativ.rmi.shared.NamingService;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -23,7 +24,7 @@ public class Loader {
     
     public static void main(String[] args) throws RemoteException, NotBoundException {
 
-        String host = "localhost";  
+        String host = "rmi-registry";
         int port = 10999;
         
         LOG.log(Level.INFO, "Getting registry instance from {0}:{1}",
@@ -33,10 +34,14 @@ public class Loader {
         
         LOG.log(Level.INFO, "Registry instance was successfully obtained!");
         
+        LOG.log(Level.INFO, "Looking up the NAMING_SERVICE!");
+        
+        NamingService namingService = (NamingService) registry
+                .lookup("NAMING_SERVICE");
+        
         LOG.log(Level.INFO, "Looking up a CALCULATOR instance!");
         
-        Calculator calculator = (Calculator) registry
-                .lookup("CALCULATOR");
+        Calculator calculator = (Calculator) namingService.find("CALCULATOR");
         
         LOG.log(Level.INFO, "CALCULATOR lookup has been successfully done!");
         

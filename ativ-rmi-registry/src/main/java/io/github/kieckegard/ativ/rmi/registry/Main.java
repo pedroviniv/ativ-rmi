@@ -5,8 +5,7 @@
  */
 package io.github.kieckegard.ativ.rmi.registry;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -30,16 +29,19 @@ public class Main extends UnicastRemoteObject {
         try {
             Main main = new Main();
             main.startRegistry(10999);
-        } catch (RemoteException ex) {
+        } catch (RemoteException | AlreadyBoundException ex) {
             LOG.log(Level.WARNING, "An problem occurred while starting Registry", ex);
         }
-        
     }
     
-    public void startRegistry(int port) throws RemoteException {
+    public void startRegistry(int port) throws RemoteException, 
+            AlreadyBoundException {
+        
         LOG.log(Level.INFO, "Creating Registry on port {0}", port);
         
         Registry registry = LocateRegistry.createRegistry(port);
+        
+        registry.bind("NAMING_SERVICE", new NamingServiceImpl());
         
         LOG.log(Level.INFO, "Registry successfully created!");
         

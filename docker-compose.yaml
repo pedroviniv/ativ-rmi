@@ -1,0 +1,26 @@
+version: "2"
+services:
+  rmi-registry:
+    container_name: ativ-rmi-registry
+    image: ativ-rmi-registry
+    build: ./ativ-rmi-registry
+    ports:
+      - "10999:10999"
+    expose:
+      - 10999
+  rmi-server:
+    container_name: ativ-rmi-server
+    image: ativ-rmi-server
+    build: ./ativ-rmi-server
+    links:
+      - rmi-registry:rmi-registry
+  rmi-client:
+    container_name: ativ-rmi-client
+    image: ativ-rmi-client
+    build: ./ativ-rmi-client
+    links:
+      - rmi-registry:rmi-registry
+networks:
+  default:
+    external:
+      name: ativ-rmi

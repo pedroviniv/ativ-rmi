@@ -5,7 +5,10 @@
  */
 package io.github.kieckegard.ativ.rmi.server;
 
+import io.github.kieckegard.ativ.rmi.shared.NamingService;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,9 +24,10 @@ public class Loader {
     private static final Logger LOG = Logger.getLogger(Loader.class.getName());
     
     public static void main(String[] args) throws RemoteException, 
-            AlreadyBoundException {
+            AlreadyBoundException,
+            NotBoundException {
         
-        String host = "localhost";
+        String host = "rmi-registry";
         int port = 10999;
         
         LOG.log(Level.INFO, "Getting Registry on {0}:{1}... ", new Object[]{host,port});
@@ -34,11 +38,13 @@ public class Loader {
         
         LOG.log(Level.INFO, "BINDING CalculatorImpl into Registry... ");
         
-        registry.bind("CALCULATOR", new CalculatorImpl());
+        NamingService naming = (NamingService) registry
+                .lookup("NAMING_SERVICE");
+        
+        naming.save("CALCULATOR", new CalculatorImpl());
         
         LOG.log(Level.INFO, "CalculatorImpl was successfully bound and"
                 + " can be accessed by \"CALCULATOR\" name!");
-        
         
     }
 }
