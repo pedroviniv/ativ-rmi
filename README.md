@@ -7,7 +7,7 @@ O projeto divide-se em três módulos:
 
 - **ativ-rmi-registry** Que trata-se de um módulo que cria o Registry na porta 10999. Este mesmo módulo expõe a implementação NamingServiceImpl da interface NamingService no Registry criado. De maneira que a mesma possa ser acessado por outros módulos.
 - **ativ-rmi-server** trata-se de um módulo, que recupera a instância do Registry criado no módulo acima, recupera a instância do NamingService exposto no registry e adiciona a implementação de um objeto Remoto "CalculadoraImpl" através do método .save de NamingService.
-- **ativ-corba-client** Por fim, este módulo serve apenas para recuperar a instância do Registry na porta 10999 do primeiro módulo, recuperar a instância do NamingService exposto e recuperar do NamingService, a instância exposta do Objeto remoto CalculadoraImpl (por meio da interface Calculadora) para então realizar uma chamada de procedimento remota para o objeto exposto.
+- **ativ-rmi-client** Por fim, este módulo serve apenas para recuperar a instância do Registry na porta 10999 do primeiro módulo, recuperar a instância do NamingService exposto e recuperar do NamingService, a instância exposta do Objeto remoto CalculadoraImpl (por meio da interface Calculadora) para então realizar uma chamada de procedimento remota para o objeto exposto.
 
 Para executar este projeto, siga as seguintes instruções:
 
